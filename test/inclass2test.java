@@ -28,18 +28,18 @@ public class inclass2test {
 		driver.get("https://www.reddit.com");
 	}
 
-	// Given that I am on the main page
-	// When I view the title
-	// Then I see that it contains the word "reddit"
+        
+	// Given that I am not logged on to Reddit
+        // When I go to the front page
+        // Then I should see that a search textbox appears
 	@Test
-	public void testShowsCorrectTitle() {
+	public void testHasSearchBox() {
 		
-		// Simply check that the title contains the word "reddit"
-		
-		String title = driver.getTitle();
-		assertTrue(title.contains("reddit"));
+		WebElement search = driver.findElement(By.id("search"));
+		assertTrue(search!=null);
 	}
 	
+        /*
 	// Given that I am on the main page
 	// When I view the header
 	// Then I see that it contains "new", "rising", and "top" links
@@ -57,7 +57,8 @@ public class inclass2test {
 			fail();
 		}
 	}
-	
+	*/
+        /*
 	// Given that I am on the main page
 	// When I view the Remember Me section
 	// Then I should see that it contains the phrase "remember me"
@@ -76,7 +77,8 @@ public class inclass2test {
 			fail();
 		}
 	}
-	
+	*/
+        /*
 	// Given that I am on the main page
 	// When I click on the "new" link
 	// Then I should be redirected to the "new" page
@@ -91,7 +93,8 @@ public class inclass2test {
 		String newPageTitle = driver.getTitle();
 		assertTrue(newPageTitle.contains("newest submissions"));
 	}
-	
+	*/
+        /*
 	// Given that I am on the main page
 	// And I am not logged in 
 	// When I try to login with an valid username and invalid password
@@ -99,10 +102,10 @@ public class inclass2test {
 	@Test
 	public void testBadPasswordResetLink() {
 		
-		// Enter username "meow", password "meow"
+		// Enter username "testUserName333", password "123456"
 		
-		driver.findElement(By.name("user")).sendKeys("meow");
-		driver.findElement(By.name("passwd")).sendKeys("meow");
+		driver.findElement(By.name("user")).sendKeys("testUserName333");
+		driver.findElement(By.name("passwd")).sendKeys("123456");
 		
 		// Look for the submit button (in the login div) and click
 		// to attempt to login 
@@ -121,6 +124,6 @@ public class inclass2test {
 			fail();
 		}
 	}
-	
+	*/
 
 }
