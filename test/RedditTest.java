@@ -1,46 +1,41 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.Test;
 import static org.junit.Assert.*;
+
+import org.junit.Before;
+import org.junit.Test;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
 
 /**
+ * As a user,
+ * I would like to see reddit links in all sorts of ways,
+ * So that I can know what is happening in the world
+ * @author wlaboon
  *
- * @author Benjamin
  */
-public class HoodPopperTest {
-    
-    static WebDriver driver = new HtmlUnitDriver();
+
+public class RedditTest {
+
+	static WebDriver driver = new HtmlUnitDriver();
 	
-	// Start at the home page for hoodpopper for each test
+	// Start at the home page for reddit for each test
 	@Before
 	public void setUp() throws Exception {
-		driver.get("http://lit-bayou-7912.herokuapp.com/");
+		driver.get("https://www.reddit.com");
 	}
 
 	// Given that I am on the main page
 	// When I view the title
-	// Then I see that it contains the word "hoodpopper"
+	// Then I see that it contains the word "reddit"
 	@Test
 	public void testShowsCorrectTitle() {
 		
-		// Simply check that the title contains the word "hoodpopper"
+		// Simply check that the title contains the word "reddit"
 		
 		String title = driver.getTitle();
-		assertTrue(title.contains("Hoodpopper"));
+		assertTrue(title.contains("reddit"));
 	}
 	
-        /*
 	// Given that I am on the main page
 	// When I view the header
 	// Then I see that it contains "new", "rising", and "top" links
@@ -58,9 +53,7 @@ public class HoodPopperTest {
 			fail();
 		}
 	}
-	*/
-        
-        /*
+	
 	// Given that I am on the main page
 	// When I view the Remember Me section
 	// Then I should see that it contains the phrase "remember me"
@@ -79,9 +72,7 @@ public class HoodPopperTest {
 			fail();
 		}
 	}
-	*/
-
-        /*
+	
 	// Given that I am on the main page
 	// When I click on the "new" link
 	// Then I should be redirected to the "new" page
@@ -96,9 +87,7 @@ public class HoodPopperTest {
 		String newPageTitle = driver.getTitle();
 		assertTrue(newPageTitle.contains("newest submissions"));
 	}
-	*/
-
-        /*
+	
 	// Given that I am on the main page
 	// And I am not logged in 
 	// When I try to login with an valid username and invalid password
@@ -128,6 +117,6 @@ public class HoodPopperTest {
 			fail();
 		}
 	}
-	*/
+	
 
 }
