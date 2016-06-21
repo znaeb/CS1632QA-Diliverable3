@@ -61,7 +61,8 @@ public class HoodPopperTest {
                 box.sendKeys(keysToSend);
                 line=2;
                 driver.findElements(By.name("commit")).get(0).click();
-                String page=driver.getPageSource();
+                //String page=driver.getPageSource();
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
                 line=3;
                 int spaces=page.split(":on_sp").length-1;
                 System.out.println("spacesCount: "+spaces);
@@ -93,7 +94,7 @@ public class HoodPopperTest {
                 box.sendKeys(keysToSend);
                 line=2;
                 driver.findElements(By.name("commit")).get(0).click();
-                String page=driver.getPageSource();
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
                 line=3;
                 int idents=page.split(":on_ident").length-1;
                 System.out.println("identCount: "+idents);
@@ -125,7 +126,7 @@ public class HoodPopperTest {
                 box.sendKeys(keysToSend);
                 line=2;
                 driver.findElements(By.name("commit")).get(0).click();
-                String page=driver.getPageSource();
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
                 line=3;
                 int newLines=page.split(":on_nl").length-1;
                 System.out.println("NewLineCount: "+newLines);
@@ -157,7 +158,7 @@ public class HoodPopperTest {
                 box.sendKeys(keysToSend);
                 line=2;
                 driver.findElements(By.name("commit")).get(0).click();
-                String page=driver.getPageSource();
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
                 line=3;
                 int operators=page.split(":on_op").length-1;
                 System.out.println("operators: "+operators);
@@ -170,7 +171,36 @@ public class HoodPopperTest {
 	}
         
         //story2: user wishes to test the hoodpopper's parsing.
-        
+        // Given that I am on the main page
+	// When input some code to the textBox and Parse
+	// Then I see Properly Parsed output
+	@Test
+	public void testParse() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b * 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(1).click();//press parse
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
+                line=3;
+                int operators=page.split(":on_op").length-1;
+                System.out.println("operators: "+operators);
+                assertTrue(operators==5); //=, =, =, +, *
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NE: "+line);
+                    fail();
+            }
+	}
         
         
         
