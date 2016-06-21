@@ -49,36 +49,125 @@ public class HoodPopperTest {
 	@Test
 	public void testTokenizeSpaces() {
 		
-		// Check for new, rising, and top links - if any of
-		// these is not found, fail the test
-		int line=0;
-		try {
-			WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
-                        line=1;
-                        String keysToSend="a = 5\n" +
-                            "b = 6\n" +
-                            "c = a + (b * 4)";
-                        box.sendKeys(keysToSend);
-                        line=2;
-                        driver.findElements(By.name("commit")).get(0).click();
-                        String page=driver.getPageSource();
-                        line=3;
-			List<WebElement> spacesList=driver.findElements(By.partialLinkText(":on_sp"));
-                        line=4;
-                        int spaces=page.split(":on_sp").length-1;
-                        System.out.println("spacesCount: "+spaces);
-                        assertTrue(spaces==10);
-                        
-		} catch (NoSuchElementException nseex) {
-                    System.out.println("NE: "+line);
-			fail();
-		}
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b * 4)";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(0).click();
+                String page=driver.getPageSource();
+                line=3;
+                int spaces=page.split(":on_sp").length-1;
+                System.out.println("spacesCount: "+spaces);
+                assertTrue(spaces==10);
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NE: "+line);
+                    fail();
+            }
 	}
         
+        //story1: user wishes to test the hoodpopper's tokinization.
+        // Given that I am on the main page
+	// When input some code to the textBox and Tokenize
+	// Then I see Properly Tokenized identifiers
+	@Test
+	public void testTokenizeIdent() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b * 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(0).click();
+                String page=driver.getPageSource();
+                line=3;
+                int idents=page.split(":on_ident").length-1;
+                System.out.println("identCount: "+idents);
+                assertTrue(idents==7);
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NE: "+line);
+                    fail();
+            }
+	}
         
+        //story1: user wishes to test the hoodpopper's tokinization.
+        // Given that I am on the main page
+	// When input some code to the textBox and Tokenize
+	// Then I see Properly Tokenized newlines
+	@Test
+	public void testTokenizeNewLine() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b * 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(0).click();
+                String page=driver.getPageSource();
+                line=3;
+                int newLines=page.split(":on_nl").length-1;
+                System.out.println("NewLineCount: "+newLines);
+                assertTrue(newLines==3);
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NE: "+line);
+                    fail();
+            }
+	}
         
-        
-        
+        //story1: user wishes to test the hoodpopper's tokinization.
+        // Given that I am on the main page
+	// When input some code to the textBox and Tokenize
+	// Then I see Properly Tokenized operators
+	@Test
+	public void testTokenizeOperator() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b * 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(0).click();
+                String page=driver.getPageSource();
+                line=3;
+                int operators=page.split(":on_op").length-1;
+                System.out.println("operators: "+operators);
+                assertTrue(operators==5); //=, =, =, +, *
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NE: "+line);
+                    fail();
+            }
+	}
         
         //story2: user wishes to test the hoodpopper's parsing.
         
