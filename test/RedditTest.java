@@ -88,7 +88,7 @@ public class RedditTest {
 		String newPageTitle = driver.getTitle();
 		assertTrue(newPageTitle.contains("newest submissions"));
 	}
-	
+	/*
 	// Given that I am on the main page
 	// And I am not logged in 
 	// When I try to login with an valid username and invalid password
@@ -96,9 +96,9 @@ public class RedditTest {
 	@Test
 	public void testBadPasswordResetLink() {
 		
-		// Enter username "testUserName333", password "123456"
+		// Enter username "meow", password "meow"
 		
-		driver.findElement(By.name("user")).sendKeys("testUserName333");
+		driver.findElement(By.name("meow")).sendKeys("meow");
 		driver.findElement(By.name("passwd")).sendKeys("123456");
 		
 		// Look for the submit button (in the login div) and click
@@ -118,6 +118,6 @@ public class RedditTest {
 			fail();
 		}
 	}
-	
+	*/
 
 }

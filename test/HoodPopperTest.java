@@ -13,6 +13,8 @@ import static org.junit.Assert.*;
 import org.openqa.selenium.*;
 import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.htmlunit.HtmlUnitDriver;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -40,6 +42,52 @@ public class HoodPopperTest {
 		assertTrue(title.contains("Hoodpopper"));
 	}
 	
+        //story1: user wishes to test the hoodpopper's tokinization.
+        // Given that I am on the main page
+	// When input some code to the textBox and Tokenize
+	// Then I see Properly Tokenized spaces
+	@Test
+	public void testTokenizeSpaces() {
+		
+		// Check for new, rising, and top links - if any of
+		// these is not found, fail the test
+		int line=0;
+		try {
+			WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                        line=1;
+                        String keysToSend="a = 5\n" +
+                            "b = 6\n" +
+                            "c = a + (b * 4)";
+                        box.sendKeys(keysToSend);
+                        line=2;
+                        driver.findElements(By.name("commit")).get(0).click();
+                        String page=driver.getPageSource();
+                        line=3;
+			List<WebElement> spacesList=driver.findElements(By.partialLinkText(":on_sp"));
+                        line=4;
+                        int spaces=page.split(":on_sp").length-1;
+                        System.out.println("spacesCount: "+spaces);
+                        assertTrue(spaces==10);
+                        
+		} catch (NoSuchElementException nseex) {
+                    System.out.println("NE: "+line);
+			fail();
+		}
+	}
+        
+        
+        
+        
+        
+        
+        //story2: user wishes to test the hoodpopper's parsing.
+        
+        
+        
+        
+        
+        //story3: user wishes to test the hoodpopper's compiling.
+
         /*
 	// Given that I am on the main page
 	// When I view the header
