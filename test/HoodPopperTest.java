@@ -69,7 +69,7 @@ public class HoodPopperTest {
                 assertTrue(spaces==10);
 
             } catch (NoSuchElementException nseex) {
-                System.out.println("NE: "+line);
+                System.out.println("NoElement: "+line);
                     fail();
             }
 	}
@@ -101,7 +101,7 @@ public class HoodPopperTest {
                 assertTrue(idents==7);
 
             } catch (NoSuchElementException nseex) {
-                System.out.println("NE: "+line);
+                System.out.println("NoElement: "+line);
                     fail();
             }
 	}
@@ -133,7 +133,7 @@ public class HoodPopperTest {
                 assertTrue(newLines==3);
 
             } catch (NoSuchElementException nseex) {
-                System.out.println("NE: "+line);
+                System.out.println("NoElement: "+line);
                     fail();
             }
 	}
@@ -165,7 +165,7 @@ public class HoodPopperTest {
                 assertTrue(operators==5); //=, =, =, +, *
 
             } catch (NoSuchElementException nseex) {
-                System.out.println("NE: "+line);
+                System.out.println("NoElement: "+line);
                     fail();
             }
 	}
@@ -173,9 +173,9 @@ public class HoodPopperTest {
         //story2: user wishes to test the hoodpopper's parsing.
         // Given that I am on the main page
 	// When input some code to the textBox and Parse
-	// Then I see Properly Parsed output
+	// Then I see Properly Parsed identifiers
 	@Test
-	public void testParse() {
+	public void testParseIdent() {
 		
             // Check for new, rising, and top links - if any of
             // these is not found, fail the test
@@ -192,21 +192,282 @@ public class HoodPopperTest {
                 driver.findElements(By.name("commit")).get(1).click();//press parse
                 String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
                 line=3;
-                int operators=page.split(":on_op").length-1;
-                System.out.println("operators: "+operators);
-                assertTrue(operators==5); //=, =, =, +, *
+                int identifiers=page.split("@ident").length-1;
+                System.out.println("Parse identifiers: "+identifiers);
+                assertTrue(identifiers==7);
 
             } catch (NoSuchElementException nseex) {
-                System.out.println("NE: "+line);
+                System.out.println("NoElement: "+line);
+                    fail();
+            }
+	}
+        
+        //story2: user wishes to test the hoodpopper's parsing.
+        // Given that I am on the main page
+	// When input some code to the textBox and Parse
+	// Then I see Properly Parsed integer declarations
+	@Test
+	public void testParseInt() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b * 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(1).click();//press parse
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
+                line=3;
+                int parseInts=page.split("@int").length-1; // 5, 6, 4
+                System.out.println("Parse ints: "+parseInts);
+                assertTrue(parseInts==3);
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NoElement: "+line);
+                    fail();
+            }
+	}
+        
+        //story2: user wishes to test the hoodpopper's parsing.
+        // Given that I am on the main page
+	// When input some code to the textBox and Parse
+	// Then I see Properly Parsed identifiers, and equals declarations, eg. *,+,=
+	@Test
+	public void testParseIdentifiers() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b * 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(1).click();//press parse
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
+                line=3;
+                int identifiers=page.split("@ident").length-1; 
+                System.out.println("Parse identifiers: "+identifiers);
+                assertTrue(identifiers==7);
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NoElement: "+line);
+                    fail();
+            }
+	}
+        
+        //story2: user wishes to test the hoodpopper's parsing.
+        // Given that I am on the main page
+	// When input some code to the textBox and Parse
+	// Then I see Properly Parsed operators (including equals declarations), eg. *,+,=
+	@Test
+	public void testParseOperators() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b * 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(1).click();//press parse
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
+                line=3;
+                int equals=page.split(":assign").length-1; 
+                int times=page.split("\\*").length-1;//not sure whether a(b+c) is valid in ruby for multiplication or not 
+                int minus=page.split("\\-").length-1;
+                int plus=page.split("\\+").length-1;
+                int devide=page.split("\\/").length-1;
+                int operators=equals+times+minus+devide+plus;
+                System.out.println("=: "+equals+" +: "+plus+" *: "+times+" -: "+minus+" /: "+devide);
+                System.out.println("Parse operators: "+operators);
+                assertTrue(operators==5);
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NoElement: "+line);
+                    fail();
+            }
+	}
+        
+        
+        //story3: user wishes to test the hoodpopper's compiling.
+        // Given that I am on the main page
+	// When input some code to the textBox and compile
+	// Then I see Properly compiled putstrings
+	@Test
+	public void testCompilePuts() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b * 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(2).click();//press compile
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
+                line=3;
+                //int puts=page.split("putstring").length-1;
+                int puts=page.split("opt_send").length-1;
+                System.out.println("Compile puts: "+puts);
+                assertTrue(puts==1);
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NoElement: "+line);
+                    fail();
+            }
+	}
+        
+        //story3: user wishes to test the hoodpopper's compiling.
+        // Given that I am on the main page
+	// When input some code to the textBox and compile
+	// Then I see Properly compiled plusses
+	@Test
+	public void testCompilePlus() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b * 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(2).click();//press compile
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
+                line=3;
+                int plus=page.split("opt_plus").length-1;
+                System.out.println("Compile plus: "+plus);
+                assertTrue(plus==1);
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NoElement: "+line);
+                    fail();
+            }
+	}
+        
+        //story3: user wishes to test the hoodpopper's compiling.
+        // Given that I am on the main page
+	// When input some code to the textBox and compile
+	// Then I see Properly compiled minuses
+	@Test
+	public void testCompileMinus() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a - (b * 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(2).click();//press compile
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
+                line=3;
+                int minus=page.split("opt_minus").length-1;
+                System.out.println("Compile minus: "+minus);
+                assertTrue(minus==1);
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NoElement: "+line);
+                    fail();
+            }
+	}
+        
+        //story3: user wishes to test the hoodpopper's compiling.
+        // Given that I am on the main page
+	// When input some code to the textBox and compile
+	// Then I see Properly compiled division operations
+	@Test
+	public void testCompileDivision() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b / 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(2).click();//press compile
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
+                line=3;
+                int devides=page.split("opt_div").length-1;
+                System.out.println("Compile devides: "+devides);
+                assertTrue(devides==1);
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NoElement: "+line);
+                    fail();
+            }
+	}
+        
+        //story3: user wishes to test the hoodpopper's compiling.
+        // Given that I am on the main page
+	// When input some code to the textBox and compile
+	// Then I see Properly compiled Multiplication operations
+	@Test
+	public void testCompileMultiplication() {
+		
+            // Check for new, rising, and top links - if any of
+            // these is not found, fail the test
+            int line=0;
+            try {
+                WebElement box=driver.findElement(By.xpath("/html/body/form/p[1]/textarea"));
+                line=1;
+                String keysToSend="a = 5\n" +
+                    "b = 6\n" +
+                    "c = a + (b * 4)"
+                        + "\nput c";
+                box.sendKeys(keysToSend);
+                line=2;
+                driver.findElements(By.name("commit")).get(2).click();//press compile
+                String page=driver.findElement(By.xpath("/html/body/p[1]/code")).getText();
+                line=3;
+                int multiplys=page.split("opt_mult").length-1;
+                System.out.println("Compile multiplications: "+multiplys);
+                assertTrue(multiplys==1);
+
+            } catch (NoSuchElementException nseex) {
+                System.out.println("NoElement: "+line);
                     fail();
             }
 	}
         
         
         
-        
-        //story3: user wishes to test the hoodpopper's compiling.
-
         /*
 	// Given that I am on the main page
 	// When I view the header
